@@ -87,9 +87,11 @@
 
   fonts.packages = with pkgs; [
     inter
+    carlito
+    caladea
     ibm-plex
+    corefonts
     nerd-fonts.jetbrains-mono
-
     noto-fonts
     noto-fonts-color-emoji
     noto-fonts-cjk-sans
@@ -173,6 +175,7 @@
   users.users."taivv18" = {
     isNormalUser = true;
     description = "Vu Viet Tai";
+    shell = pkgs.zsh;
     extraGroups = [
       "networkmanager" # Quản lý mạng, wifi
       "wheel" # Quyền chạy lệnh sudo
@@ -197,8 +200,8 @@
     ];
   };
 
-  # Install firefox.
   programs.tmux.enable = true;
+  programs.zsh.enable = true;
   programs.firefox = {
     enable = true;
     policies = {
@@ -223,10 +226,13 @@
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (pkgs.lib.getName pkg) [
       "cloudflare-warp"
+      "corefonts"
     ];
 
   environment.systemPackages = with pkgs; [
     curl
+    onlyoffice-desktopeditors
+    starship
     socat
     netcat
     wget
@@ -280,12 +286,15 @@
     nix-direnv
     neovim
     eza
+    fzf
+    zoxide
+    zsh-autosuggestions
+    zsh-syntax-highlighting
     file
     tree
     ripgrep
     fd
     unzip
-    starship
     lazygit
     android-tools
     scrcpy
@@ -321,7 +330,6 @@
     comma
   ];
 
-  # Keep Plasma installed, but disable KDE's crash handler entirely.
   systemd.services."drkonqi-coredump-processor@".enable = false;
   systemd.user.sockets."drkonqi-coredump-launcher".enable = false;
   systemd.user.services."drkonqi-coredump-launcher@".enable = false;
@@ -330,13 +338,6 @@
   systemd.user.services."drkonqi-sentry-postman".enable = false;
   systemd.user.paths."drkonqi-sentry-postman".enable = false;
   systemd.user.timers."drkonqi-sentry-postman".enable = false;
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
   programs.wireshark.enable = true;
   programs.git = {
     enable = true;
